@@ -14,10 +14,17 @@ public class MainController {
     // Simple in-memory DAO instance for now
     private final CommentsDAO commentsDAO = new CommentsDAO();
 
-    // Show the page with the list of comments
+    // Show the page with the list of comments (with optional search)
     @GetMapping("/")
-    public String index(Model model) {
-        model.addAttribute("comments", commentsDAO.getComments());
+    public String index(@RequestParam(required = false) String search, Model model) {
+
+        if (search == null || search.isBlank()) {
+            model.addAttribute("comments", commentsDAO.getComments());
+        } else {
+            model.addAttribute("comments", commentsDAO.searchComments(search));
+        }
+
+        model.addAttribute("search", search);
         return "index";  // resolves to src/main/resources/templates/index.html
     }
 
@@ -29,5 +36,4 @@ public class MainController {
         // PRG pattern: redirect so refresh doesn’t resubmit the form
         return "redirect:/";
     }
- 
 }
