@@ -10,6 +10,17 @@
 <div class="container">
     <h1>Welcome to the comments application!</h1>
 
+    <!-- search form -->
+    <form th:action="@{/}" method="get">
+        <label for="search">Search comments</label>
+        <input type="text" id="search" name="search" th:value="${search}">
+        <button type="submit">Search</button>
+    </form>
+
+    <p th:if="${search != null}">
+        Showing results for "<span th:text="${search}">term</span>"
+    </p>
+
     <!-- table of comments -->
     <table class="table">
         <thead>
